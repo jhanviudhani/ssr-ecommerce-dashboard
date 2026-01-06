@@ -1,15 +1,26 @@
 "use client";
 
-export default function AdminUsersPage() {
-  const admins = [
-  {
-    name: "Owner",
-    email: localStorage.getItem("userEmail"),
-    role: "Owner",
-    status: "Active",
-  },
-];
+import { useEffect, useState } from "react";
 
+export default function AdminUsersPage() {
+  const [email, setEmail] = useState("");
+
+  // ✅ Access localStorage ONLY on client
+  useEffect(() => {
+    const userEmail = localStorage.getItem("userEmail");
+    if (userEmail) {
+      setEmail(userEmail);
+    }
+  }, []);
+
+  const admins = [
+    {
+      name: "Owner",
+      email: email || "Loading...",
+      role: "Owner",
+      status: "Active",
+    },
+  ];
 
   return (
     <div className="space-y-6">
