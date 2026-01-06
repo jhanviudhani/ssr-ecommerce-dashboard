@@ -17,6 +17,12 @@ const COLORS = ["#6366f1", "#22c55e", "#f97316", "#ef4444", "#06b6d4"];
 
 export default function AnalyticsPage() {
   const [products, setProducts] = useState([]);
+  const [mounted, setMounted] = useState(false);
+
+  // ✅ This ensures charts render ONLY on client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -40,6 +46,9 @@ export default function AnalyticsPage() {
 
     fetchProducts();
   }, []);
+
+  // ⛔ During build / SSR, do NOT render charts
+  if (!mounted) return null;
 
   return (
     <div className="space-y-8">
