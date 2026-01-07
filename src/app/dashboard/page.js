@@ -18,7 +18,7 @@ export default function DashboardPage() {
       return;
     }
 
-    // ✅ Load shop name EMAIL-wise (permanent)
+   
     if (userEmail) {
       const savedShop = localStorage.getItem(`shopName_${userEmail}`);
       if (savedShop) {

@@ -19,7 +19,6 @@ export default function AnalyticsPage() {
   const [products, setProducts] = useState([]);
   const [mounted, setMounted] = useState(false);
 
-  // ✅ This ensures charts render ONLY on client
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -47,7 +46,7 @@ export default function AnalyticsPage() {
     fetchProducts();
   }, []);
 
-  // ⛔ During build / SSR, do NOT render charts
+  
   if (!mounted) return null;
 
   return (

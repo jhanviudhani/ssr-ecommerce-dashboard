@@ -26,7 +26,7 @@ export async function POST(req) {
 
   const user = await User.create({
     email,
-    password, // (plain text OK for college project)
+    password,
     martId,
   });
 
