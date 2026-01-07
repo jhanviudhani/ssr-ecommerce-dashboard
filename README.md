@@ -29,7 +29,7 @@ It allows admins to manage products, track inventory, monitor stock levels, and 
 
 ## ⚙️ Setup Instructions
 
-### 1. Clone the repository
+###  Clone the repository
 ```bash
 git clone https://github.com/jhanviudhani/ssr-ecommerce-dashboard
  2. Install dependencies
