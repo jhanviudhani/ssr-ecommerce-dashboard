@@ -8,32 +8,30 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-async function handleLogin(e) {
-  e.preventDefault();
+  const [showPassword, setShowPassword] = useState(false); // 👁️ NEW
 
-  const res = await fetch("/api/auth", {
-    method: "PUT", // LOGIN
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+  async function handleLogin(e) {
+    e.preventDefault();
 
-  const data = await res.json();
+    const res = await fetch("/api/auth", {
+      method: "PUT", // LOGIN
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  if (!res.ok) {
-    alert(data.error);
-    return;
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error);
+      return;
+    }
+
+    localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("userEmail", data.user.email);
+    localStorage.setItem("martId", data.user.martId);
+
+    router.push("/dashboard");
   }
-
-  // ✅ FIX IS HERE
-  localStorage.setItem("loggedIn", "true");
-  localStorage.setItem("userEmail", data.user.email);
-  localStorage.setItem("martId", data.user.martId);
-
-  router.push("/dashboard");
-}
-
-
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 via-white to-orange-200">
@@ -72,17 +70,6 @@ async function handleLogin(e) {
           <p className="text-slate-500 mb-6">
             Sign in to manage your store
           </p>
-<div className="flex flex-col items-center mb-8">
-  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-pink-500 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-    M
-  </div>
-  <h1 className="mt-4 text-3xl font-extrabold text-white">
-    Manage<span className="text-orange-300">Mart</span>
-  </h1>
-  <p className="text-white/70 mt-1">
-    Smart inventory management
-  </p>
-</div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <input
@@ -94,14 +81,25 @@ async function handleLogin(e) {
               required
             />
 
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-500"
-              required
-            />
+            {/* PASSWORD WITH EYE ICON */}
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-orange-500 pr-10"
+                required
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-orange-600"
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
 
             <button
               type="submit"
@@ -110,7 +108,6 @@ async function handleLogin(e) {
               Sign In
             </button>
           </form>
-          
 
           <p className="text-center text-sm text-slate-500 mt-6">
             Don’t have an account?{" "}
